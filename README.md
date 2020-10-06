@@ -1,0 +1,1 @@
+Проект сделан по https://www.youtube.com/watch?v=ivDjWYcKDZI&t=7602s
