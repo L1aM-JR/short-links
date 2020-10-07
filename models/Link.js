@@ -1,5 +1,6 @@
 const { Schema, model, Types } = require('mongoose');
 
+// Схема одной ссылки в mongo
 const schema = new Schema({
   from: { type: String, required: true },
   to: { type: String, required: true, unique: true },

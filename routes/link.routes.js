@@ -5,21 +5,27 @@ const auth = require('../middleware/auth.middleware');
 const shortid = require('shortid');
 const router = Router();
 
+// Роут для генерации сокращенной ссылки
 router.post('/generate', auth, async (req, res) => {
   try {
     const baseUrl = config.get('baseUrl');
     const { from } = req.body;
+    // Генерируем короткий код для ссылки
     const code = shortid.generate();
 
+    // Ищем ссылку по полю from в базе
     const existing = await Link.findOne({ from });
 
     if (existing) {
       return res.json({ link: existing });
     }
 
+    // Лепим короткую ссылку
     const to = baseUrl + '/t/' + code;
+    // Создаем ссылку в базе
     const link = new Link({ code, to, from, owner: req.user.userId });
 
+    // Ждем сохранения ссылки
     await link.save();
 
     res.status(201).json({ link });
@@ -28,8 +34,11 @@ router.post('/generate', auth, async (req, res) => {
   }
 });
 
+
+// Роут для получения всех ссылок пользователя
 router.get('/', auth, async (req, res) => {
   try {
+    // Получаем все ссылки по полю owner === id пользователя
     const links = await Link.find({ owner: req.user.userId });
     res.json(links);
   } catch (e) {
@@ -37,8 +46,10 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// Роут для получения ссылки
 router.get('/:id', auth, async (req, res) => {
   try {
+    // Получаем ссылку по id
     const link = await Link.findById(req.params.id);
     res.json(link);
   } catch (e) {

@@ -1,12 +1,14 @@
+// Подключаем модули 
 const express = require('express');
 const config = require('config');
 const mongoose = require('mongoose');
-const patch = require('path');
+const path = require('path');
 
 const app = express();
 
 app.use(express.json({ extended: true }));
 
+// роуты для обработки запросов с фронта
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/link', require('./routes/link.routes'));
 app.use('/t', require('./routes/redirect.routes'));
@@ -19,8 +21,10 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+// Получаем порт из конфига
 const PORT = config.get('port') || 5000;
 
+// Подключение сервера к базе данных
 async function start() {
   try {
     await mongoose.connect(config.get('mongoUri'), {

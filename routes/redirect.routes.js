@@ -2,14 +2,17 @@ const { Router } = require('express');
 const router = Router();
 const Link = require('../models/Link');
 
+// Роут перенаправляющий с короткой ссылки в оригинальную и считающий сол-во кликов
 router.get('/:code', async (req, res) => {
   try {
+    // Получаем ссылку по коду
    const link = await Link.findOne({ code: req.params.code });
 
    if (link) {
     link.clicks++;
 
     await link.save();
+    // Перенаправляем пользователя по оригинальной ссылке
     return res.redirect(link.from);
    } 
 
