@@ -1,7 +1,6 @@
 import React from "react";
 
 export function LinkCard({ link }) {
-  console.log({ link, date: new Date(link.date) });
   return (
     <>
       <h2>Ссылка</h2>
