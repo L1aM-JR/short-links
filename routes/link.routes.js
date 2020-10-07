@@ -46,6 +46,24 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// Роут для удаления ссылки по id
+router.delete('/', auth, async (req, res) => {
+  try {
+    // Удаляем ссылку
+    const { deletedCount } = await Link.deleteOne({ _id: req.body.id });
+    
+    if (deletedCount) {
+      const links = await Link.find({ owner: req.user.userId });
+
+      return res.json({ message: "Ссылка успешно удалена", links });
+    }
+
+    res.status(500).json({ message: "Что то пошло не так, попробуйте снова" });
+  } catch (e) {
+    res.status(500).json({ message: "Что то пошло не так, попробуйте снова" });
+  }
+});
+
 // Роут для получения ссылки
 router.get('/:id', auth, async (req, res) => {
   try {

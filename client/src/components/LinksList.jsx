@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
 import { useMessage } from "../hooks/message.hook";
 
 export function LinksList({ links }) {
   const { request } = useHttp();
   const message = useMessage();
+  const { token } = useContext(AuthContext);
 
   if (!links.length) {
     return <p className="center">Ссылок пока нет</p>;
@@ -13,7 +15,7 @@ export function LinksList({ links }) {
 
   const removeHandler = (id) => async () => {
     try {
-      const data = await request('/api/link', 'DELETE', { id });
+      const data = await request('/api/link', 'DELETE', { id }, { Authorization: `Bearer ${token}` });
       message(data.message);
     } catch (e) {}
   }
