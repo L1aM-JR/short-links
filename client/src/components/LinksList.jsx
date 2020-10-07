@@ -1,23 +1,9 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { useHttp } from "../hooks/http.hook";
-import { useMessage } from "../hooks/message.hook";
 
-export function LinksList({ links }) {
-  const { request } = useHttp();
-  const message = useMessage();
-  const { token } = useContext(AuthContext);
-
+export function LinksList({ links, onDelete }) {
   if (!links.length) {
     return <p className="center">Ссылок пока нет</p>;
-  }
-
-  const removeHandler = (id) => async () => {
-    try {
-      const data = await request('/api/link', 'DELETE', { id }, { Authorization: `Bearer ${token}` });
-      message(data.message);
-    } catch (e) {}
   }
 
   return (
@@ -43,7 +29,7 @@ export function LinksList({ links }) {
                 <Link to={`/detail/${link._id}`} children="Открыть" />  
               </td>
               <td className="td">
-                <i className="tiny material-icons" onClick={removeHandler(link._id)}>clear</i>
+                <i className="tiny material-icons" onClick={onDelete(link._id)}>clear</i>
               </td>
             </tr>
           );
