@@ -1,6 +1,6 @@
 {
   "port": 5000,
-  "mongoUri": "mongodb+srv://l1am:78275L1aM@cluster0.0qssh.azure.mongodb.net/app?retryWrites=true&w=majority",
+  "mongoUri": "mongodb://localhost:27017/project",
   "jwtSecret": "l1am",
   "baseUrl": "http://localhost:5000"
 }
