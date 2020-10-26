@@ -29,6 +29,8 @@ export function AuthPage() {
     const data = await api.auth.register(form);
 
     message(data.message);
+
+    auth.login(data.token, data.userId)
   }
   const loginHandler = async () => {
     const data = await api.auth.login(form);

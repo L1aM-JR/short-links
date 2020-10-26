@@ -41,7 +41,13 @@ router.post(
       // Ждем сохранения пользователя в базе
       await user.save();
 
-      res.status(201).json({ message: 'Пользователь создан' });
+      const token = jwt.sign(
+        { userId: user.id },
+        config.get('jwtSecret'),
+        { expiresIn: '1h' }
+      );
+
+      res.status(201).json({ message: 'Пользователь создан', token, userId: user.id });
 
     } catch (e) {
       res.status(500).json({ message: "Что то пошло не так, попробуйте снова" });
