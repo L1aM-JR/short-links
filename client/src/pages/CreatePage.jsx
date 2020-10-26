@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useHttp } from "../hooks/http.hook";
 import { AuthContext } from "../context/AuthContext";
 import { useHistory } from "react-router-dom";
+import { api } from "../api";
 
 export function CreatePage() {
   const history = useHistory();
   const auth = useContext(AuthContext)
-  const { request } = useHttp();
   const [ link, setLink ] = useState('');
 
   useEffect(() => {
@@ -16,7 +15,7 @@ export function CreatePage() {
   const pressHandler = async (e) => {
     if (e.key === "Enter") {
       try {
-        const data = await request('/api/link/generate', 'POST', { from: link }, { Authorization: `Bearer ${auth.token}` });
+        const data = await api.links.generateLink(link, auth.token);
         history.push(`/detail/${data.link._id}`);
       } catch (e) {}
     }

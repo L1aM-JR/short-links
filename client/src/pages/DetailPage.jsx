@@ -4,6 +4,7 @@ import { LinkCard } from "../components/LinkCard";
 import { Loader } from "../components/Loader";
 import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
+import { api } from "../api";
 
 export function DetailPage() {
   const { token } = useContext(AuthContext);
@@ -13,7 +14,7 @@ export function DetailPage() {
 
   const getLink = useCallback(async () => {
     try {
-      const fetched = await request(`/api/link/${linkId}`, 'GET', null, { Authorization: `Bearer ${token}` });
+      const fetched = await api.links.goForLink(linkId, token);
 
       setLink(fetched);
     } catch (e) {}

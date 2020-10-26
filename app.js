@@ -25,19 +25,16 @@ if (process.env.NODE_ENV === "production") {
 const PORT = config.get('port') || 5000;
 
 // Подключение сервера к базе данных
-async function start() {
-  try {
-    await mongoose.connect(config.get('mongoUri'), {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true
-    });
-
+mongoose
+  .connect(config.get('mongoUri'), {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  })
+  .then(() => {
     app.listen(PORT, () => console.log(`app has bin started on port ${PORT}...`));
-  } catch (e) {
+  })
+  .catch(e => {
     console.log(e.message);
     process.exit(1);
-  }
-}
-
-start();
+  });

@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
 import { useMessage } from "../hooks/message.hook";
+import { api } from "../api";
 
 export function AuthPage() {
   const auth = useContext(AuthContext);
   const message = useMessage();
-  const { loading, error, request, clearError } = useHttp();
+  const { loading, error, clearError } = useHttp();
 
   const [ form, setForm ] = useState({ email: "", password: "" });
 
@@ -25,19 +26,16 @@ export function AuthPage() {
   };
 
   const registerHandler = async () => {
-    try {
-      const data = await request('/api/auth/register', 'POST', { ...form });
-      message(data.message);
-    } catch (e) {}
+    const data = await api.auth.register(form);
+
+    message(data.message);
   }
-
   const loginHandler = async () => {
-    try {
-      const data = await request('/api/auth/login', 'POST', { ...form });
-
-      auth.login(data.token, data.userId)
-      message(data.message);
-    } catch (e) {}
+    const data = await api.auth.login(form);
+    
+    auth.login(data.token, data.userId)
+    
+    message(data.message);
   }
 
   return (
